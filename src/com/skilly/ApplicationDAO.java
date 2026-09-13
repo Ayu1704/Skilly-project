@@ -3,8 +3,47 @@ package com.skilly;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class ApplicationDAO {
+    public boolean hasAlreadyApplied(
+            int studentId,
+            String companyName,
+            String role
+    ) {
+
+        String sql =
+                "SELECT id FROM applications " +
+                        "WHERE student_id = ? " +
+                        "AND company_name = ? " +
+                        "AND role = ?";
+
+        try (
+                Connection connection =
+                        DatabaseConnection.getConnection();
+                PreparedStatement statement =
+                        connection.prepareStatement(sql)
+        ) {
+
+            statement.setInt(1, studentId);
+            statement.setString(2, companyName);
+            statement.setString(3, role);
+
+            ResultSet resultSet =
+                    statement.executeQuery();
+
+            return resultSet.next();
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                    "Error checking application: " +
+                            e.getMessage()
+            );
+
+            return false;
+        }
+    }
 
 
     public void saveApplication(
@@ -96,16 +135,16 @@ public class ApplicationDAO {
             e.printStackTrace();
         }
     }
-    public void updateApplicationStatus(
+    public boolean updateApplicationStatus(
             int applicationId,
+            int studentId,
             String newStatus
     ) {
 
-        String sql = """
-            UPDATE applications
-            SET status = ?
-            WHERE id = ?
-            """;
+        String sql =
+                "UPDATE applications " +
+                        "SET status = ? " +
+                        "WHERE id = ? AND student_id = ?";
 
         try (
                 Connection connection =
@@ -117,6 +156,7 @@ public class ApplicationDAO {
 
             statement.setString(1, newStatus);
             statement.setInt(2, applicationId);
+            statement.setInt(3, studentId);
 
             int rowsUpdated =
                     statement.executeUpdate();
@@ -124,31 +164,36 @@ public class ApplicationDAO {
             if (rowsUpdated > 0) {
 
                 System.out.println(
-                        "Application status updated in database!"
+                        "Application status updated successfully!"
                 );
+
+                return true;
 
             } else {
 
                 System.out.println(
-                        "Application ID not found!"
+                        "Application not found for this student."
                 );
             }
 
         } catch (SQLException e) {
 
             System.out.println(
-                    "Failed to update application status!"
+                    "Error updating application: " +
+                            e.getMessage()
             );
-
-            e.printStackTrace();
         }
-    }
-    public void deleteApplication(int applicationId) {
 
-        String sql = """
-            DELETE FROM applications
-            WHERE id = ?
-            """;
+        return false;
+    }
+    public boolean deleteApplication(
+            int applicationId,
+            int studentId
+    ) {
+
+        String sql =
+                "DELETE FROM applications " +
+                        "WHERE id = ? AND student_id = ?";
 
         try (
                 Connection connection =
@@ -159,6 +204,7 @@ public class ApplicationDAO {
         ) {
 
             statement.setInt(1, applicationId);
+            statement.setInt(2, studentId);
 
             int rowsDeleted =
                     statement.executeUpdate();
@@ -169,20 +215,23 @@ public class ApplicationDAO {
                         "Application deleted successfully!"
                 );
 
+                return true;
+
             } else {
 
                 System.out.println(
-                        "Application ID not found!"
+                        "Application not found for this student."
                 );
             }
 
         } catch (SQLException e) {
 
             System.out.println(
-                    "Failed to delete application!"
+                    "Error deleting application: " +
+                            e.getMessage()
             );
-
-            e.printStackTrace();
         }
+
+        return false;
     }
 }

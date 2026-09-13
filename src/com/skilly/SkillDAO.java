@@ -4,7 +4,102 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+
 public class SkillDAO {
+    public boolean deleteSkill(int skillId, int studentId) {
+
+        String sql =
+                "DELETE FROM skills " +
+                        "WHERE id = ? AND student_id = ?";
+
+        try (
+                Connection connection =
+                        DatabaseConnection.getConnection();
+                PreparedStatement statement =
+                        connection.prepareStatement(sql)
+        ) {
+
+            statement.setInt(1, skillId);
+            statement.setInt(2, studentId);
+
+            int rowsDeleted =
+                    statement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+
+                System.out.println(
+                        "Skill deleted successfully!"
+                );
+
+                return true;
+
+            } else {
+
+                System.out.println(
+                        "Skill not found for this student."
+                );
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                    "Error deleting skill: " +
+                            e.getMessage()
+            );
+        }
+
+        return false;
+    }
+    public boolean updateSkillLevel(
+            int skillId,
+            int studentId,
+            int newLevel
+    ) {
+
+        String sql =
+                "UPDATE skills " +
+                        "SET skill_level = ? " +
+                        "WHERE id = ? AND student_id = ?";
+
+        try (
+                Connection connection =
+                        DatabaseConnection.getConnection();
+                PreparedStatement statement =
+                        connection.prepareStatement(sql)
+        ) {
+
+            statement.setInt(1, newLevel);
+            statement.setInt(2, skillId);
+            statement.setInt(3, studentId);
+
+            int rowsUpdated =
+                    statement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+
+                System.out.println(
+                        "Skill level updated successfully!"
+                );
+
+                return true;
+
+            } else {
+
+                System.out.println(
+                        "Skill not found for this student."
+                );
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                    "Error updating skill level: " +
+                            e.getMessage()
+            );
+        }
+
+        return false;
+    }
     public void loadSkillsIntoStudent(Student student) {
 
         String sql =
@@ -60,7 +155,7 @@ public class SkillDAO {
 
             statement.setInt(1, studentId);
             statement.setString(2, skill.getSkillName().trim().toLowerCase());
-            statement.setInt(3, skill.getLevel());
+            statement.setInt(3, skill.getSkillLevel());
 
             statement.executeUpdate();
 

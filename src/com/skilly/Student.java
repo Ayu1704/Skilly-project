@@ -28,6 +28,21 @@ public class Student {
         this.skills = new ArrayList<>();
         this.applications = new ArrayList<>();
     }
+    public int getSkillLevel(String skillName) {
+
+        for (Skill skill : skills) {
+
+            if (
+                    skill.getSkillName()
+                            .equalsIgnoreCase(skillName)
+            ) {
+
+                return skill.getSkillLevel();
+            }
+        }
+
+        return 0;
+    }
     public int getId() {
         return id;
     }
