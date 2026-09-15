@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skilly | Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<button
+        id="themeToggle"
+        class="theme-toggle"
+        type="button"
+        aria-label="Toggle light and dark mode">
+    🌙 Dark Mode
+</button>
+
+<div id="navbar"></div>
+
+<main class="page-container">
+
+    <section class="page-heading">
+        <div class="brand-badge">S</div>
+
+        <h1>
+            Welcome,
+            <span id="studentName">Student</span>!
+        </h1>
+
+        <p>
+            Welcome to your student portal.
+        </p>
+    </section>
+
+    <section class="dashboard-stats">
+
+        <div class="stat-card">
+            <h3>Total Applications</h3>
+            <p id="applicationCount">Loading...</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Accepted Applications</h3>
+            <p id="acceptedCount">Loading...</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Skills</h3>
+            <p id="skillCount">Loading...</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Available Opportunities</h3>
+            <p id="opportunityCount">Loading...</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Registered Students</h3>
+            <p id="studentCount">Loading...</p>
+        </div>
+
+    </section>
+
+    <section class="dashboard-section">
+
+        <h2>Registered Students</h2>
+
+        <div id="studentList">
+            Loading students...
+        </div>
+
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>

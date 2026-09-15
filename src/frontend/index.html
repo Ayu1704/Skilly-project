@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skilly | Student Login</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<button
+        id="themeToggle"
+        class="theme-toggle"
+        type="button"
+        aria-label="Toggle light and dark mode">
+    🌙 Dark Mode
+</button>
+
+<main class="page-container">
+
+    <section class="page-heading">
+        <div class="brand-badge">S</div>
+
+        <h1>Welcome to Skilly</h1>
+
+        <p>
+            Your student career portal
+        </p>
+    </section>
+
+    <section class="form-card">
+
+        <div class="form-header">
+            <h2>Sign in</h2>
+
+            <p>
+                Login to continue to your student dashboard.
+            </p>
+        </div>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label for="email">
+                    Email address
+                </label>
+
+                <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required>
+            </div>
+
+            <button
+                    type="submit"
+                    class="primary-button">
+                Login
+            </button>
+
+        </form>
+
+        <p class="form-footer">
+            Don't have an account?
+            <a href="register.html">
+                Create an account
+            </a>
+        </p>
+
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>

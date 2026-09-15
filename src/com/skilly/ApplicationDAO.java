@@ -105,6 +105,7 @@ public class ApplicationDAO {
 
             var resultSet = statement.executeQuery();
 
+
             System.out.println("\n========== DATABASE APPLICATIONS ==========");
 
             while (resultSet.next()) {

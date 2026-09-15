@@ -8,7 +8,11 @@ import java.sql.SQLException;
 public class DashboardDAO {
 
     public int getTotalApplications(int studentId) {
-        String sql = "SELECT COUNT(*) FROM applications WHERE student_id = ?";
+        String sql = """
+                SELECT COUNT(*)
+                FROM applications
+                WHERE student_id = ?
+                """;
 
         try (
                 Connection conn = DatabaseConnection.getConnection();
@@ -16,14 +20,15 @@ public class DashboardDAO {
         ) {
             stmt.setInt(1, studentId);
 
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt(1);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
             }
 
         } catch (SQLException e) {
-            System.out.println("Error counting applications: " + e.getMessage());
+            System.out.println("Error counting applications: "
+                    + e.getMessage());
         }
 
         return 0;
@@ -44,10 +49,10 @@ public class DashboardDAO {
             stmt.setInt(1, studentId);
             stmt.setString(2, status);
 
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt(1);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
             }
 
         } catch (SQLException e) {
@@ -59,7 +64,11 @@ public class DashboardDAO {
     }
 
     public int getTotalSkills(int studentId) {
-        String sql = "SELECT COUNT(*) FROM skills WHERE student_id = ?";
+        String sql = """
+                SELECT COUNT(*)
+                FROM skills
+                WHERE student_id = ?
+                """;
 
         try (
                 Connection conn = DatabaseConnection.getConnection();
@@ -67,14 +76,15 @@ public class DashboardDAO {
         ) {
             stmt.setInt(1, studentId);
 
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt(1);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
             }
 
         } catch (SQLException e) {
-            System.out.println("Error counting skills: " + e.getMessage());
+            System.out.println("Error counting skills: "
+                    + e.getMessage());
         }
 
         return 0;

@@ -3,6 +3,16 @@ package com.skilly;
 import java.util.Scanner;
 
 public class Main {
+    public static boolean isValidDate(String date) {
+
+        try {
+            java.sql.Date.valueOf(date);
+            return true;
+
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
     public static int readPositiveInteger(Scanner scanner, String message) {
 
         while (true) {
@@ -57,6 +67,28 @@ public class Main {
 
             System.out.print("Enter password: ");
             String password = sc.nextLine();
+            name = name.trim();
+            email = email.trim();
+
+            if (name.isEmpty()
+                    || email.isEmpty()
+                    || password.isEmpty()) {
+
+                System.out.println(
+                        "Name, email, and password cannot be empty."
+                );
+
+                return;
+            }
+
+            if (!email.contains("@") || !email.contains(".")) {
+
+                System.out.println(
+                        "Please enter a valid email address."
+                );
+
+                return;
+            }
 
             Student newStudent =
                     new Student(
@@ -146,16 +178,15 @@ public class Main {
             System.out.println("16. Delete Opportunity");
             System.out.println("17. Exit");
 
-            System.out.print("Enter your choice: ");
 
-            int choice = sc.nextInt();
-            sc.nextLine();
-
+            int choice =
+                    readPositiveInteger(
+                            sc,
+                            "Enter your choice: "
+                    );
             switch (choice) {
 
                 case 1: {
-                    sc.nextLine();
-
                     System.out.print("Enter company name: ");
                     String companyName = sc.nextLine().trim();
 
@@ -213,8 +244,7 @@ public class Main {
 
                     Application application = new Application(
                             companyName,
-                            role,
-                            "Pending"
+                            role, status
                     );
 
                     applicationDAO.saveApplication(
@@ -240,15 +270,15 @@ public class Main {
 
                     System.out.println("\nChoose new status:");
                     System.out.println("1. Applied");
-                    System.out.println("2. Online Assessment");
-                    System.out.println("3. Interview");
-                    System.out.println("4. Selected");
-                    System.out.println("5. Rejected");
+                    System.out.println("2. Shortlisted");
+                    System.out.println("3. Selected");
+                    System.out.println("4. Rejected");
 
-                    System.out.print("Enter your choice: ");
-
-                    int statusChoice = sc.nextInt();
-                    sc.nextLine();
+                    int statusChoice =
+                            readPositiveInteger(
+                                    sc,
+                                    "Enter your choice: "
+                            );
 
                     String newStatus;
 
@@ -259,18 +289,14 @@ public class Main {
                             break;
 
                         case 2:
-                            newStatus = "Online Assessment";
+                            newStatus = "Shortlisted";
                             break;
 
                         case 3:
-                            newStatus = "Interview";
-                            break;
-
-                        case 4:
                             newStatus = "Selected";
                             break;
 
-                        case 5:
+                        case 4:
                             newStatus = "Rejected";
                             break;
 
@@ -299,7 +325,12 @@ public class Main {
                 case 5:
 
                     System.out.print("Enter skill name: ");
-                    String skillName = sc.nextLine();
+                    String skillName = sc.nextLine().trim();
+
+                    if (skillName.isEmpty()) {
+                        System.out.println("Skill name cannot be empty.");
+                        break;
+                    }
 
                     int level =
                             readPositiveInteger(
@@ -308,6 +339,10 @@ public class Main {
                             );
 
                     while (level > 10) {
+
+                        System.out.println(
+                                "Skill level must be between 1 and 10."
+                        );
 
                         level =
                                 readPositiveInteger(
@@ -387,32 +422,40 @@ public class Main {
                     }
 
                     break;
-                case 8: {
-                    sc.nextLine();
+                    case 8: {
 
-                    System.out.print("Enter company name: ");
-                    String companyName = sc.nextLine().trim();
+                        System.out.print("Enter company name: ");
+                        String companyName = sc.nextLine().trim();
 
-                    System.out.print("Enter role: ");
-                    String role = sc.nextLine().trim();
+                        System.out.print("Enter role: ");
+                        String role = sc.nextLine().trim();
 
-                    System.out.print("Enter deadline (YYYY-MM-DD): ");
-                    String deadline = sc.nextLine().trim();
+                        System.out.print("Enter deadline (YYYY-MM-DD): ");
+                        String deadline = sc.nextLine().trim();
 
-                    if (companyName.isEmpty()
-                            || role.isEmpty()
-                            || deadline.isEmpty()) {
+                        if (companyName.isEmpty()
+                                || role.isEmpty()
+                                || deadline.isEmpty()) {
 
-                        System.out.println("All fields are required.");
-                        break;
-                    }
+                            System.out.println("All fields are required.");
+                            break;
+                        }
 
-                    Opportunity newOpportunity =
-                            new Opportunity(
-                                    companyName,
-                                    role,
-                                    deadline
+                        if (!isValidDate(deadline)) {
+
+                            System.out.println(
+                                    "Invalid date. Please use YYYY-MM-DD."
                             );
+
+                            break;
+                        }
+
+                        Opportunity newOpportunity =
+                                new Opportunity(
+                                        companyName,
+                                        role,
+                                        deadline
+                                );
 
                     int skillCount =
                             readPositiveInteger(
@@ -577,8 +620,6 @@ public class Main {
                     break;
                 }
                 case 14: {
-                    sc.nextLine();
-
                     System.out.print(
                             "Enter company, role, or skill to search: "
                     );
@@ -610,8 +651,6 @@ public class Main {
                                     "Enter opportunity ID to update: "
                             );
 
-                    sc.nextLine();
-
                     System.out.print("Enter new company name: ");
                     String newCompanyName =
                             sc.nextLine().trim();
@@ -626,13 +665,18 @@ public class Main {
 
                     String newDeadline =
                             sc.nextLine().trim();
-
                     if (newCompanyName.isEmpty()
                             || newRole.isEmpty()
                             || newDeadline.isEmpty()) {
 
                         System.out.println(
                                 "All fields are required."
+                        );
+
+                    } else if (!isValidDate(newDeadline)) {
+
+                        System.out.println(
+                                "Invalid date. Please use YYYY-MM-DD."
                         );
 
                     } else {
@@ -645,6 +689,8 @@ public class Main {
                         );
                     }
 
+
+
                     break;
                 }
                 case 16: {
@@ -653,7 +699,6 @@ public class Main {
                     int deleteOpportunityId =
                             readPositiveInteger(sc, "Enter opportunity ID to delete: ");
 
-                    sc.nextLine();
 
                     System.out.print("Are you sure you want to delete this opportunity? (yes/no): ");
                      confirmation = sc.nextLine().trim();
